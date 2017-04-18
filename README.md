@@ -1,9 +1,14 @@
-# api documentation for  [cpr (v2.0.2)](https://github.com/davglass/cpr)  [![npm package](https://img.shields.io/npm/v/npmdoc-cpr.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-cpr) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-cpr.svg)](https://travis-ci.org/npmdoc/node-npmdoc-cpr)
+# npmdoc-cpr
+
+#### api documentation for  [cpr (v2.0.2)](https://github.com/davglass/cpr)  [![npm package](https://img.shields.io/npm/v/npmdoc-cpr.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-cpr) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-cpr.svg)](https://travis-ci.org/npmdoc/node-npmdoc-cpr)
+
 #### cp -R
 
-[![NPM](https://nodei.co/npm/cpr.png?downloads=true)](https://www.npmjs.com/package/cpr)
+[![NPM](https://nodei.co/npm/cpr.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/cpr)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-cpr/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-cpr_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-cpr/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-cpr/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-cpr/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-cpr/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-cpr/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-cpr/build/screenCapture.npmPackageListing.svg)
 
@@ -17,8 +22,7 @@
 
 {
     "author": {
-        "name": "Dav Glass",
-        "email": "davglass@gmail.com"
+        "name": "Dav Glass"
     },
     "bin": {
         "cpr": "./bin/cpr"
@@ -28,44 +32,34 @@
     },
     "contributors": [
         {
-            "name": "soyuka",
-            "email": "soyuka@gmail.com"
+            "name": "soyuka"
         },
         {
-            "name": "fresheneesz",
-            "email": "bitetrudpublic@gmail.com"
+            "name": "fresheneesz"
         },
         {
-            "name": "silverwind",
-            "email": "me@silverwind.io"
+            "name": "silverwind"
         },
         {
-            "name": "Peter deHaan",
-            "email": "peter@deseloper.com"
+            "name": "Peter deHaan"
         },
         {
-            "name": "André Cruz",
-            "email": "andremiguelcruz@msn.com"
+            "name": "André Cruz"
         },
         {
-            "name": "Brian J Brennan",
-            "email": "brianloveswords@gmail.com"
+            "name": "Brian J Brennan"
         },
         {
-            "name": "Elijah Insua",
-            "email": "tmpvar@gmail.com"
+            "name": "Elijah Insua"
         },
         {
-            "name": "Jonny Reeves",
-            "email": "github@jonnyreeves.co.uk"
+            "name": "Jonny Reeves"
         },
         {
-            "name": "Lydie Danet",
-            "email": "lydie@happinov.fr"
+            "name": "Lydie Danet"
         },
         {
-            "name": "Ben Elliott",
-            "email": "ben.elliott@gsacapital.com"
+            "name": "Ben Elliott"
         }
     ],
     "dependencies": {
@@ -99,13 +93,11 @@
     "main": "./lib/index.js",
     "maintainers": [
         {
-            "name": "davglass",
-            "email": "davglass@gmail.com"
+            "name": "davglass"
         }
     ],
     "name": "cpr",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git+ssh://git@github.com/davglass/cpr.git"
@@ -119,123 +111,6 @@
     },
     "version": "2.0.2"
 }
-```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module cpr](#apidoc.module.cpr)
-1.  [function <span class="apidocSignatureSpan"></span>cpr (from, to, opts, callback)](#apidoc.element.cpr.cpr)
-1.  object <span class="apidocSignatureSpan">cpr.</span>stack
-
-#### [module cpr.stack](#apidoc.module.cpr.stack)
-1.  [function <span class="apidocSignatureSpan">cpr.stack.</span>Stack ()](#apidoc.element.cpr.stack.Stack)
-
-
-
-# <a name="apidoc.module.cpr"></a>[module cpr](#apidoc.module.cpr)
-
-#### <a name="apidoc.element.cpr.cpr"></a>[function <span class="apidocSignatureSpan"></span>cpr (from, to, opts, callback)](#apidoc.element.cpr.cpr)
-- description and source-code
-```javascript
-cpr = function (from, to, opts, callback) {
-    if (typeof opts === 'function') {
-        callback = opts;
-        opts = {};
-    }
-
-    var options = {},
-        proc;
-
-    Object.keys(opts).forEach(function(key) {
-        options[key] = opts[key];
-    });
-
-    options.from = from;
-    options.to = to;
-    options.errors = [];
-
-    proc = function() {
-        getTree(options.from, options, function(err, tree) {
-            filterTree(tree, options, function(err, t) {
-                splitTree(t, options, function(dirs, files) {
-                    if (!dirs.length && !files.length) {
-                        return callback(new Error('No files to copy'));
-                    }
-                    createDirs(dirs, to, options, function() {
-                        createFiles(files, to, options, function() {
-                            var out = [], err;
-                            Object.keys(options.toHash).forEach(function(k) {
-                                out.push(options.toHash[k]);
-                            });
-                            if (options.confirm) {
-                                confirm(out, options, callback);
-                            } else if (!options.errors.length) {
-                                callback(null, out.sort());
-                            } else {
-<span class="apidocCodeCommentSpan">                                /*istanbul ignore next*/
-</span>                                err = new Error('Unable to copy directory' + (out.length ? ' entirely' : ''));
-                                /*istanbul ignore next*/
-                                err.list = options.errors;
-                                /*istanbul ignore next*/
-                                callback(err, out.sort());
-                            }
-                        });
-                    });
-                });
-            });
-        });
-    };
-
-    fs.stat(options.from, function(err, stat) {
-        if (err) {
-            return callback(new Error('From should be a file or directory'));
-        }
-        if (stat && stat.isDirectory()) {
-            if (options.deleteFirst) {
-                rimraf(to, function() {
-                    proc();
-                });
-            } else {
-                proc();
-
-            }
-        } else {
-            if (stat.isFile()) {
-                var dirRegex = new RegExp(path.sep + '$');
-                if (dirRegex.test(to)) { // Create directory if has trailing separator
-                  to = path.join(to, path.basename(options.from));
-                }
-                return copyFile(options.from, to, options, callback);
-            }
-            callback(new Error('From should be a file or directory'));
-        }
-    });
-}
-```
-- example usage
-```shell
-n/a
-```
-
-
-
-# <a name="apidoc.module.cpr.stack"></a>[module cpr.stack](#apidoc.module.cpr.stack)
-
-#### <a name="apidoc.element.cpr.stack.Stack"></a>[function <span class="apidocSignatureSpan">cpr.stack.</span>Stack ()](#apidoc.element.cpr.stack.Stack)
-- description and source-code
-```javascript
-Stack = function () {
-    this.errors   = [];
-    this.finished = 0;
-    this.results  = [];
-    this.total    = 0;
-}
-```
-- example usage
-```shell
-n/a
 ```
 
 

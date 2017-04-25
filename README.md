@@ -1,6 +1,6 @@
 # npmdoc-cpr
 
-#### api documentation for  [cpr (v2.0.2)](https://github.com/davglass/cpr)  [![npm package](https://img.shields.io/npm/v/npmdoc-cpr.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-cpr) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-cpr.svg)](https://travis-ci.org/npmdoc/node-npmdoc-cpr)
+#### basic api documentation for  [cpr (v2.0.2)](https://github.com/davglass/cpr)  [![npm package](https://img.shields.io/npm/v/npmdoc-cpr.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-cpr) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-cpr.svg)](https://travis-ci.org/npmdoc/node-npmdoc-cpr)
 
 #### cp -R
 

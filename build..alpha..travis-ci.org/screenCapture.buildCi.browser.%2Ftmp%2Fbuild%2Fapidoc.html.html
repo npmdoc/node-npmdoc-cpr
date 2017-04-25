@@ -65,16 +65,20 @@
 
         <li>
 
-            <a class="apidocElementLiA" href="#apidoc.element.cpr.toString">
-            function <span class="apidocSignatureSpan">cpr.</span>toString
-            <span class="apidocSignatureSpan">()</span>
-            </a>
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">cpr.</span>stack</span>
 
         </li>
 
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.cpr.cpr">module cpr.cpr</a><ol>
+
         <li>
 
-            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">cpr.</span>stack</span>
+            <a class="apidocElementLiA" href="#apidoc.element.cpr.cpr.cpr">
+            function <span class="apidocSignatureSpan">cpr.</span>cpr
+            <span class="apidocSignatureSpan">(from, to, opts, callback)</span>
+            </a>
 
         </li>
 
@@ -86,19 +90,6 @@
 
             <a class="apidocElementLiA" href="#apidoc.element.cpr.stack.Stack">
             function <span class="apidocSignatureSpan">cpr.stack.</span>Stack
-            <span class="apidocSignatureSpan">()</span>
-            </a>
-
-        </li>
-
-    </ol></li>
-
-    <li class="apidocModuleLi"><a href="#apidoc.module.cpr.toString">module cpr.toString</a><ol>
-
-        <li>
-
-            <a class="apidocElementLiA" href="#apidoc.element.cpr.toString.toString">
-            function <span class="apidocSignatureSpan">cpr.</span>toString
             <span class="apidocSignatureSpan">()</span>
             </a>
 
@@ -198,20 +189,96 @@
 
 
 
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.cpr.cpr" id="apidoc.module.cpr.cpr">module cpr.cpr</a></h1>
+
+
     <h2>
-        <a href="#apidoc.element.cpr.toString" id="apidoc.element.cpr.toString">
-        function <span class="apidocSignatureSpan">cpr.</span>toString
-        <span class="apidocSignatureSpan">()</span>
+        <a href="#apidoc.element.cpr.cpr.cpr" id="apidoc.element.cpr.cpr.cpr">
+        function <span class="apidocSignatureSpan">cpr.</span>cpr
+        <span class="apidocSignatureSpan">(from, to, opts, callback)</span>
         </a>
     </h2>
     <ul>
-    <li>description and source-code<pre class="apidocCodePre">toString = function () {
-    return text;
+    <li>description and source-code<pre class="apidocCodePre">cpr = function (from, to, opts, callback) {
+    if (typeof opts === 'function') {
+        callback = opts;
+        opts = {};
+    }
+
+    var options = {},
+        proc;
+
+    Object.keys(opts).forEach(function(key) {
+        options[key] = opts[key];
+    });
+
+    options.from = from;
+    options.to = to;
+    options.errors = [];
+
+    proc = function() {
+        getTree(options.from, options, function(err, tree) {
+            filterTree(tree, options, function(err, t) {
+                splitTree(t, options, function(dirs, files) {
+                    if (!dirs.length &amp;&amp; !files.length) {
+                        return callback(new Error('No files to copy'));
+                    }
+                    createDirs(dirs, to, options, function() {
+                        createFiles(files, to, options, function() {
+                            var out = [], err;
+                            Object.keys(options.toHash).forEach(function(k) {
+                                out.push(options.toHash[k]);
+                            });
+                            if (options.confirm) {
+                                confirm(out, options, callback);
+                            } else if (!options.errors.length) {
+                                callback(null, out.sort());
+                            } else {
+<span class="apidocCodeCommentSpan">                                /*istanbul ignore next*/
+</span>                                err = new Error('Unable to copy directory' + (out.length ? ' entirely' : ''));
+                                /*istanbul ignore next*/
+                                err.list = options.errors;
+                                /*istanbul ignore next*/
+                                callback(err, out.sort());
+                            }
+                        });
+                    });
+                });
+            });
+        });
+    };
+
+    fs.stat(options.from, function(err, stat) {
+        if (err) {
+            return callback(new Error('From should be a file or directory'));
+        }
+        if (stat &amp;&amp; stat.isDirectory()) {
+            if (options.deleteFirst) {
+                rimraf(to, function() {
+                    proc();
+                });
+            } else {
+                proc();
+
+            }
+        } else {
+            if (stat.isFile()) {
+                var dirRegex = new RegExp(path.sep + '$');
+                if (dirRegex.test(to)) { // Create directory if has trailing separator
+                  to = path.join(to, path.basename(options.from));
+                }
+                return copyFile(options.from, to, options, callback);
+            }
+            callback(new Error('From should be a file or directory'));
+        }
+    });
 }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
-
-
 
 
 </div>
@@ -233,24 +300,6 @@
     this.results  = [];
     this.total    = 0;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
-    </ul>
-
-
-</div>
-
-<div class="apidocSectionDiv">
-<h1><a href="#apidoc.module.cpr.toString" id="apidoc.module.cpr.toString">module cpr.toString</a></h1>
-
-
-    <h2>
-        <a href="#apidoc.element.cpr.toString.toString" id="apidoc.element.cpr.toString.toString">
-        function <span class="apidocSignatureSpan">cpr.</span>toString
-        <span class="apidocSignatureSpan">()</span>
-        </a>
-    </h2>
-    <ul>
-    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
     <li>example usage<pre class="apidocCodePre">n/a</pre></li>
     </ul>
 
